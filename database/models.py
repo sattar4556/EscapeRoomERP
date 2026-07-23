@@ -136,3 +136,55 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(
         default=datetime.utcnow
     )
+    class Role(Base):
+    __tablename__ = "roles"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    name: Mapped[str] = mapped_column(
+        String(50),
+        unique=True
+    )
+
+
+class UserRole(Base):
+    __tablename__ = "user_roles"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id")
+    )
+
+    role_id: Mapped[int] = mapped_column(
+        ForeignKey("roles.id")
+    )
+
+
+class Game(Base):
+    __tablename__ = "games"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    organization_id: Mapped[int] = mapped_column(
+        ForeignKey("organizations.id")
+    )
+
+    title: Mapped[str] = mapped_column(
+        String(150)
+    )
+
+    genre: Mapped[str] = mapped_column(
+        String(100)
+    )
+
+    duration: Mapped[int]
+
+    min_players: Mapped[int]
+
+    max_players: Mapped[int]
+
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True
+    )
