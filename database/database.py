@@ -1,17 +1,22 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker,
+)
+
+from database.models import Base
 
 DATABASE_URL = "sqlite+aiosqlite:///database.sqlite3"
 
 engine = create_async_engine(
     DATABASE_URL,
-    echo=True
+    echo=True,
 )
 
 SessionLocal = async_sessionmaker(
     bind=engine,
-    expire_on_commit=False
+    expire_on_commit=False,
 )
-from database.models import Base
+
 
 async def init_db():
     async with engine.begin() as conn:
