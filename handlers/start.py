@@ -3,12 +3,15 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 
 from database.crud import create_or_update_user
+from keyboards.main_menu import main_menu
+from utils.messages import new_user, old_user
 
 router = Router()
 
 
 @router.message(CommandStart())
 async def start(message: Message):
+
     user, created = await create_or_update_user(
         telegram_id=message.from_user.id,
         username=message.from_user.username,
@@ -17,10 +20,12 @@ async def start(message: Message):
     )
 
     if created:
-        text = f"""🎉 سلام {user.first_name}
-
-حساب شما با موفقیت ساخته شد."""
+        await message.answer(
+            new_user(user.first_name),
+            reply_markup=main_menu()
+        )
     else:
-        text = f"""👋 خوش برگشتی {user.first_name}"""
-
-    await message.answer(text)
+        await message.answer(
+            old_user(user.first_name),
+            reply_markup=main_menu()
+        )
