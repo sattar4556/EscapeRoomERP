@@ -11,6 +11,8 @@ from handlers.menu import router as menu_router
 from handlers.games import router as games_router
 from handlers.admin import router as admin_router
 from handlers.session import router as session_router
+from handlers.booking import router as booking_router
+from handlers.payment import router as payment_router
 
 load_dotenv()
 
@@ -35,12 +37,10 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
     
+async def main():
+    await init_db()
+    await dp.start_polling(bot)
 
-from handlers.booking import router as booking_router
 
-dp.include_router(booking_router)
-
-from handlers.payment import router as payment_router
-
-dp.include_router(payment_router)
-
+if __name__ == "__main__":
+    asyncio.run(main())
